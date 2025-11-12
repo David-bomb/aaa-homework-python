@@ -1,14 +1,23 @@
-from typing import List
-
 class CountVectorizer:
+
     def __init__(self):
         self._feature_names = []
         self._vocabulary = {}
 
-    def fit_transform(self, corpus: List[str]) -> List[List[int]]:
+    def _tokenize(self, document: str) -> list[str]:
+        words = document.lower().split()
+        cleaned_words = []
+        for word in words:
+            cleaned_word = ''.join(char for char in word if char.isalpha())
+            if cleaned_word:
+                cleaned_words.append(cleaned_word)
+        return cleaned_words
+
+    def fit_transform(self, corpus: list[str]) -> list[list[int]]:
+        processed_corpus = [self._tokenize(doc) for doc in corpus]
+
         feature_count = 0
-        for document in corpus:
-            words = document.lower().split()
+        for words in processed_corpus:
             for word in words:
                 if word not in self._vocabulary:
                     self._vocabulary[word] = feature_count
@@ -18,18 +27,16 @@ class CountVectorizer:
         matrix = []
         vocab_size = len(self._feature_names)
 
-        for document in corpus:
+        for words in processed_corpus:
             vector = [0] * vocab_size
-            words = document.lower().split()
             for word in words:
-                if word in self._vocabulary:
-                    word_index = self._vocabulary[word]
-                    vector[word_index] += 1
+                word_index = self._vocabulary[word]
+                vector[word_index] += 1
             matrix.append(vector)
 
         return matrix
 
-    def get_feature_names(self) -> List[str]:
+    def get_feature_names(self) -> list[str]:
         return self._feature_names
 
 
