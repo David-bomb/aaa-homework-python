@@ -1,0 +1,19 @@
+$ coverage run -m unittest test_what_is_year_now.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.009s
+
+OK
+
+$ coverage report -m
+Name                       Stmts   Miss  Cover   Missing
+--------------------------------------------------------
+test_what_is_year_now.py      25      0   100%
+what_is_year_now.py           19      0   100%
+--------------------------------------------------------
+TOTAL                         44      0   100%
+
+$ coverage html
+Wrote HTML report to htmlcov/index.html
+
+$ flake8 what_is_year_now.py test_what_is_year_now.py
